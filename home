@@ -1,0 +1,149 @@
+'use client'
+
+import { useState } from 'react'
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { PlayCircle, Share2, ThumbsUp, MessageSquare } from 'lucide-react'
+
+export default function Dashboard() {
+  const [activeTab, setActiveTab] = useState('feed')
+
+  const mockPosts = [
+    { id: 1, type: 'video', title: 'Review of Awesome Affiliate Program', author: 'Jane Doe', likes: 42, comments: 7 },
+    { id: 2, type: 'post', title: 'Tips for Successful Affiliate Marketing', author: 'John Smith', likes: 38, comments: 12 },
+  ]
+
+  const mockPrograms = [
+    { id: 1, name: 'Super Affiliates', status: 'Pending Review' },
+    { id: 2, name: 'Mega Marketing', status: 'Approved' },
+  ]
+
+  const mockInvitations = [
+    { id: 1, program: 'Tech Gadgets Affiliate', inviter: 'Alice Johnson' },
+  ]
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <header className="bg-white shadow">
+        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-gray-900">Affiliate Examiner</h1>
+          <div className="flex items-center space-x-4">
+            <Avatar>
+              <AvatarImage src="/placeholder.svg" alt="User" />
+              <AvatarFallback>U</AvatarFallback>
+            </Avatar>
+            <span className="text-gray-700">Welcome, User</span>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="feed">Content Feed</TabsTrigger>
+            <TabsTrigger value="programs">My Programs</TabsTrigger>
+            <TabsTrigger value="invitations">Invitations</TabsTrigger>
+            <TabsTrigger value="submit">Submit Program</TabsTrigger>
+          </TabsList>
+          <TabsContent value="feed" className="mt-6">
+            <h2 className="text-2xl font-bold mb-4">Latest Content</h2>
+            <div className="space-y-4">
+              {mockPosts.map(post => (
+                <Card key={post.id}>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      {post.type === 'video' && <PlayCircle className="mr-2" />}
+                      {post.title}
+                    </CardTitle>
+                    <CardDescription>By {post.author}</CardDescription>
+                  </CardHeader>
+                  <CardFooter>
+                    <div className="flex items-center space-x-4">
+                      <Button variant="ghost" size="sm">
+                        <ThumbsUp className="mr-2 h-4 w-4" />
+                        {post.likes}
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <MessageSquare className="mr-2 h-4 w-4" />
+                        {post.comments}
+                      </Button>
+                      <Button variant="ghost" size="sm">
+                        <Share2 className="mr-2 h-4 w-4" />
+                        Share
+                      </Button>
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+          <TabsContent value="programs" className="mt-6">
+            <h2 className="text-2xl font-bold mb-4">My Affiliate Programs</h2>
+            <div className="space-y-4">
+              {mockPrograms.map(program => (
+                <Card key={program.id}>
+                  <CardHeader>
+                    <CardTitle>{program.name}</CardTitle>
+                    <CardDescription>Status: {program.status}</CardDescription>
+                  </CardHeader>
+                  <CardFooter>
+                    <Button>View Details</Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+          <TabsContent value="invitations" className="mt-6">
+            <h2 className="text-2xl font-bold mb-4">Examiner Invitations</h2>
+            <div className="space-y-4">
+              {mockInvitations.map(invitation => (
+                <Card key={invitation.id}>
+                  <CardHeader>
+                    <CardTitle>{invitation.program}</CardTitle>
+                    <CardDescription>Invited by: {invitation.inviter}</CardDescription>
+                  </CardHeader>
+                  <CardFooter>
+                    <Button className="mr-2">Accept</Button>
+                    <Button variant="outline">Decline</Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+          <TabsContent value="submit" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Submit New Affiliate Program</CardTitle>
+                <CardDescription>Recommend a program for examination</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form className="space-y-4">
+                  <div>
+                    <Label htmlFor="program-name">Program Name</Label>
+                    <Input id="program-name" placeholder="Enter the affiliate program name" />
+                  </div>
+                  <div>
+                    <Label htmlFor="program-description">Description</Label>
+                    <Textarea id="program-description" placeholder="Describe the affiliate program" />
+                  </div>
+                  <div>
+                    <Label htmlFor="program-url">Program URL</Label>
+                    <Input id="program-url" type="url" placeholder="https://example.com" />
+                  </div>
+                </form>
+              </CardContent>
+              <CardFooter>
+                <Button>Submit for Review</Button>
+              </CardFooter>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </main>
+    </div>
+  )
+}
